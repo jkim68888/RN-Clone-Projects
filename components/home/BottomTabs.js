@@ -9,7 +9,6 @@ import VideoActive from '../../assets/video_active.svg'
 import Shop from '../../assets/shop.svg'
 import ShopActive from '../../assets/shop_active.svg'
 import { Divider } from 'react-native-elements/dist/divider/Divider'
-import { USERS } from '../../data/users'
 
 const BottomTabs = () => {
   const [activeTab, setActiveTab] = useState('HomeActive')
