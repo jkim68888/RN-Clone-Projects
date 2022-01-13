@@ -1,12 +1,20 @@
 import React from 'react'
-import { Text, View, SafeAreaView, StyleSheet } from 'react-native'
+import { Text, View, StyleSheet, ScrollView } from 'react-native'
+import { SafeAreaView } from 'react-native-safe-area-context'
 import Header from '../components/home/Header'
 import Stories from '../components/home/Stories'
+import Post from '../components/home/Post'
+import { POSTS } from '../data/posts'
 
-const HomeScreen = ({ params }) => (
+const HomeScreen = () => (
   <SafeAreaView style={styles.container}>
     <Header />
     <Stories />
+    <ScrollView>
+      {POSTS.map((post, index) => {
+        return <Post post={post} key={index} />
+      })}
+    </ScrollView>
   </SafeAreaView>
 )
 
