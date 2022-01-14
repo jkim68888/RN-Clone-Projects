@@ -7,9 +7,9 @@ import Post from '../components/home/Post'
 import { POSTS } from '../data/posts'
 import BottomTabs from '../components/home/BottomTabs'
 
-const HomeScreen = () => (
+const HomeScreen = ({ navigation }) => (
   <SafeAreaView style={styles.container}>
-    <Header />
+    <Header navigation={navigation} />
     <Stories />
     <ScrollView>
       {POSTS.map((post, index) => {
@@ -22,6 +22,7 @@ const HomeScreen = () => (
 
 const styles = StyleSheet.create({
   container: {
+    backgroundColor: '#fff',
     flex: 1,
   },
 })

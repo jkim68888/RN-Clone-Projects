@@ -1,17 +1,18 @@
+import { NavigationContainer } from '@react-navigation/native'
 import React from 'react'
 import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native'
 import FormikPostUploader from './FormikPostUploader'
 
-const AddNewPost = () => (
+const AddNewPost = ({ navigation }) => (
   <View style={styles.container}>
-    <Header />
-    <FormikPostUploader />
+    <Header navigation={navigation} />
+    <FormikPostUploader navigation={navigation} />
   </View>
 )
 
-const Header = () => (
+const Header = ({ navigation }) => (
   <View style={styles.headerContainer}>
-    <TouchableOpacity>
+    <TouchableOpacity onPress={() => navigation.goBack()}>
       <Image
         source={{ uri: 'https://cdn.icon-icons.com/icons2/1904/PNG/512/leftarrow_121320.png' }}
         style={{ width: 25, height: 25 }}

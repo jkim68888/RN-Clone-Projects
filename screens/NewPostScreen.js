@@ -3,9 +3,9 @@ import { Text, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import AddNewPost from '../components/newPost/AddNewPost'
 
-const NewPostScreen = () => (
+const NewPostScreen = ({ navigation }) => (
   <SafeAreaView style={{ flex: 1 }}>
-    <AddNewPost />
+    <AddNewPost navigation={navigation} />
   </SafeAreaView>
 )
 

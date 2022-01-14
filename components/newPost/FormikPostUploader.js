@@ -3,6 +3,7 @@ import { Text, View, Image, TextInput, Button } from 'react-native'
 import * as Yup from 'yup'
 import { Formik } from 'formik'
 import { Divider } from 'react-native-elements/dist/divider/Divider'
+import { NavigationContainer } from '@react-navigation/native'
 
 const PLACEHOLDER_IMG = 'https://via.placeholder.com/100'
 
@@ -11,12 +12,12 @@ const uploadPostSchema = Yup.object().shape({
   caption: Yup.string().max(2200, '최대 글자 수를 초과했습니다.'),
 })
 
-const FormikPostUploader = () => {
+const FormikPostUploader = ({ navigation }) => {
   const [thumbnailUrl, setThumbnailUrl] = useState(PLACEHOLDER_IMG)
   return (
     <Formik
       initialValues={{ caption: '', imageUrl: '' }}
-      onSubmit={(values) => console.log(values)}
+      onSubmit={() => navigation.goBack()}
       validationSchema={uploadPostSchema}
       validateOnMount={true}
     >

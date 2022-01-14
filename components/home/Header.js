@@ -2,13 +2,13 @@ import React from 'react'
 import { Text, View, StyleSheet, Image, TouchableOpacity } from 'react-native'
 import Message from '../../assets/message.svg'
 
-const Header = () => (
+const Header = ({ navigation }) => (
   <View style={styles.container}>
     <TouchableOpacity>
       <Image style={styles.logo} source={require('../../assets/header_logo.png')} />
     </TouchableOpacity>
     <View style={styles.iconsContainer}>
-      <TouchableOpacity>
+      <TouchableOpacity onPress={() => navigation.push('NewPostScreen')}>
         <Image style={styles.icon} source={require('../../assets/plus.png')} />
       </TouchableOpacity>
       <TouchableOpacity>
