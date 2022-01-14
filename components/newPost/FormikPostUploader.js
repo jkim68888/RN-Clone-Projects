@@ -3,7 +3,7 @@ import { Text, View, Image, TextInput, Button } from 'react-native'
 import * as Yup from 'yup'
 import { Formik } from 'formik'
 import { Divider } from 'react-native-elements/dist/divider/Divider'
-import { NavigationContainer } from '@react-navigation/native'
+import validUrl from 'valid-url'
 
 const PLACEHOLDER_IMG = 'https://via.placeholder.com/100'
 
@@ -33,7 +33,7 @@ const FormikPostUploader = ({ navigation }) => {
             }}
           >
             <Image
-              source={{ uri: thumbnailUrl ? thumbnailUrl : PLACEHOLDER_IMG }}
+              source={{ uri: validUrl.isUri(thumbnailUrl) ? thumbnailUrl : PLACEHOLDER_IMG }}
               style={{ width: 100, height: 100 }}
             />
             <View style={{ flex: 1, marginLeft: 10 }}>
