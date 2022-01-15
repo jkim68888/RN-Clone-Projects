@@ -1,8 +1,10 @@
 import React from 'react'
-import { Text, View, TextInput, StyleSheet, Pressable, TouchableOpacity } from 'react-native'
+import { Alert, Text, View, TextInput, StyleSheet, Pressable, TouchableOpacity } from 'react-native'
 import { Formik } from 'formik'
 import * as Yup from 'yup'
 import Validator from 'email-validator'
+import { auth } from '../../firebase'
+import { signInWithEmailAndPassword } from 'firebase/auth'
 
 const LoginForm = ({ navigation }) => {
   const loginFormSchema = Yup.object().shape({
@@ -10,12 +12,21 @@ const LoginForm = ({ navigation }) => {
     password: Yup.string().required().min(6, '비밀번호는 6글자 이상이여야 합니다.'),
   })
 
+  const onLogin = async (email, password) => {
+    try {
+      await signInWithEmailAndPassword(auth, email, password)
+      console.log('success', email, password)
+    } catch (error) {
+      Alert.alert(error.message)
+    }
+  }
+
   return (
     <View style={styles.wrapper}>
       <Formik
         initialValues={{ email: '', password: '' }}
         onSubmit={(values) => {
-          console.log(values)
+          onLogin(values.email, values.password)
         }}
         validationSchema={loginFormSchema}
         validateOnMount={true}
