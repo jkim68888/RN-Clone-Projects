@@ -4,7 +4,7 @@ import { Formik } from 'formik'
 import * as Yup from 'yup'
 import Validator from 'email-validator'
 
-const LoginForm = () => {
+const LoginForm = ({ navigation }) => {
   const loginFormSchema = Yup.object().shape({
     email: Yup.string().email().required('이메일이 필요합니다.'),
     password: Yup.string().required().min(6, '비밀번호는 6글자 이상이여야 합니다.'),
@@ -63,7 +63,7 @@ const LoginForm = () => {
             </Pressable>
             <View style={styles.signupContainer}>
               <Text>계정이 없으신가요? </Text>
-              <TouchableOpacity>
+              <TouchableOpacity onPress={() => navigation.push('SignupScreen')}>
                 <Text style={{ color: '#6bb0f5' }}> 회원가입</Text>
               </TouchableOpacity>
             </View>

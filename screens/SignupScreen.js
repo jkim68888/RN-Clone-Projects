@@ -2,12 +2,12 @@ import React from 'react'
 import { Text, View, StyleSheet, Image } from 'react-native'
 import SignupForm from '../components/signup/SignupForm'
 
-const SignupScreen = () => (
+const SignupScreen = ({ navigation }) => (
   <View style={styles.container}>
     <View style={styles.logoContainer}>
       <Image source={require('../assets/logo_login.png')} style={{ width: 120, height: 120 }} />
     </View>
-    <SignupForm />
+    <SignupForm navigation={navigation} />
   </View>
 )
 
