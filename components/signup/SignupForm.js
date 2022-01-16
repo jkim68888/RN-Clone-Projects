@@ -1,22 +1,46 @@
 import React from 'react'
-import { Text, View, TextInput, StyleSheet, Pressable, TouchableOpacity } from 'react-native'
+import { Text, View, TextInput, StyleSheet, Pressable, TouchableOpacity, Alert } from 'react-native'
 import { Formik } from 'formik'
 import * as Yup from 'yup'
 import Validator from 'email-validator'
+import { auth, db } from '../../firebase'
+import { createUserWithEmailAndPassword } from 'firebase/auth'
+import { collection, addDoc } from 'firebase/firestore'
 
 const SignupForm = ({ navigation }) => {
   const signupFormSchema = Yup.object().shape({
     email: Yup.string().email().required('이메일이 필요합니다.'),
-    userName: Yup.string().required().min(2, '이름은 2글자 이상이여야 합니다.'),
+    username: Yup.string().required().min(2, '이름은 2글자 이상이여야 합니다.'),
     password: Yup.string().required().min(6, '비밀번호는 6글자 이상이여야 합니다.'),
   })
+
+  const getRandomProfilePicture = async () => {
+    const response = await fetch('https://randomuser.me/api')
+    const data = await response.json()
+    return data.results[0].picture.large
+  }
+
+  const onSignup = async (email, password, username) => {
+    try {
+      const authUser = await createUserWithEmailAndPassword(auth, email, password)
+      console.log('success', email, password, username)
+      addDoc(collection(db, 'users'), {
+        owner_uid: authUser.user.uid,
+        username: username,
+        email: authUser.user.email,
+        profile_picture: await getRandomProfilePicture(),
+      })
+    } catch (error) {
+      Alert.alert('회원가입 실패!', error.message)
+    }
+  }
 
   return (
     <View style={styles.wrapper}>
       <Formik
-        initialValues={{ email: '', userName: '', password: '' }}
+        initialValues={{ email: '', username: '', password: '' }}
         onSubmit={(values) => {
-          console.log(values)
+          onSignup(values.email, values.password, values.username)
         }}
         validationSchema={signupFormSchema}
         validateOnMount={true}
@@ -42,17 +66,16 @@ const SignupForm = ({ navigation }) => {
             <View
               style={[
                 styles.inputField,
-                { borderColor: 1 > values.userName.length || values.userName.length > 2 ? '#ccc' : 'red' },
+                { borderColor: 1 > values.username.length || values.username.length > 2 ? '#ccc' : 'red' },
               ]}
             >
               <TextInput
                 placeholder="이름"
                 placeholderTextColor="#444"
-                textContentType="userName"
-                textContentType="userName"
-                onChangeText={handleChange('userName')}
-                onBlur={handleBlur('userName')}
-                value={values.userName}
+                textContentType="username"
+                onChangeText={handleChange('username')}
+                onBlur={handleBlur('username')}
+                value={values.username}
               />
             </View>
             <View

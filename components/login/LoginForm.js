@@ -3,7 +3,7 @@ import { Alert, Text, View, TextInput, StyleSheet, Pressable, TouchableOpacity }
 import { Formik } from 'formik'
 import * as Yup from 'yup'
 import Validator from 'email-validator'
-import { auth } from '../../firebase'
+import { auth, db } from '../../firebase'
 import { signInWithEmailAndPassword } from 'firebase/auth'
 
 const LoginForm = ({ navigation }) => {
@@ -17,7 +17,17 @@ const LoginForm = ({ navigation }) => {
       await signInWithEmailAndPassword(auth, email, password)
       console.log('success', email, password)
     } catch (error) {
-      Alert.alert(error.message)
+      Alert.alert('로그인 실패!\n', `로그인 할 수 없습니다ㅠㅠ\n\n ${error.message}`, [
+        {
+          text: '확인',
+          onPress: () => console.log('확인'),
+          style: 'cancel',
+        },
+        {
+          text: '회원가입',
+          onPress: () => navigation.push('SignupScreen'),
+        },
+      ])
     }
   }
 
