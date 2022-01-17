@@ -1,11 +1,23 @@
+import { signOut } from '@firebase/auth'
 import React from 'react'
 import { Text, View, StyleSheet, Image, TouchableOpacity } from 'react-native'
 import Message from '../../assets/message.svg'
+import { auth } from '../../firebase'
+
+const handleSignout = async () => {
+  try {
+    signOut(auth)
+    console.log('로그아웃 됨')
+  } catch (error) {
+    console.log(error)
+  }
+}
 
 const Header = ({ navigation }) => (
   <View style={styles.container}>
-    <TouchableOpacity>
-      <Image style={styles.logo} source={require('../../assets/header_logo.png')} />
+    <TouchableOpacity onPress={handleSignout}>
+      <Text style={styles.logo}>로그아웃</Text>
+      {/* <Image style={styles.logo} source={require('../../assets/header_logo.png')} /> */}
     </TouchableOpacity>
     <View style={styles.iconsContainer}>
       <TouchableOpacity onPress={() => navigation.push('NewPostScreen')}>
@@ -34,7 +46,10 @@ const styles = StyleSheet.create({
   logo: {
     width: 100,
     height: 50,
-    resizeMode: 'contain',
+    lineHeight: 50,
+    fontSize: 20,
+    fontWeight: '600',
+    // resizeMode: 'contain',
   },
   iconsContainer: {
     flexDirection: 'row',
