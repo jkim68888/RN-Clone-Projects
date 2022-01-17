@@ -11,9 +11,7 @@ import { db } from '../firebase'
 
 const HomeScreen = ({ navigation }) => {
   useEffect(() => {
-    onSnapshot(collectionGroup(db, 'posts'), (snapshot) => {
-      console.log(snapshot)
-    })
+    onSnapshot(collectionGroup(db, 'posts'), (snapshot) => {})
   }, [])
 
   return (

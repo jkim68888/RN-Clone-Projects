@@ -20,16 +20,20 @@ const FormikPostUploader = ({ navigation }) => {
   const [currentLoggedInUser, setCurrentLoggedInUser] = useState({ username: '', profilePicture: '' })
 
   const getUsername = async () => {
-    const user = getAuth().currentUser
-    const q = query(collection(db, 'users'), where('owner_uid', '===', user.uid), limit(1))
-    const querySnapshot = await getDocs(q)
-    const unsubscribe = querySnapshot.forEach((doc) => {
-      setCurrentLoggedInUser({
-        username: doc.data().username,
-        profilePicture: doc.data().profile_picture,
+    try {
+      const user = getAuth().currentUser
+      const q = query(collection(db, 'users'), where('owner_uid', '==', user.uid), limit(1))
+      const querySnapshot = await getDocs(q)
+      querySnapshot.forEach((doc) => {
+        setCurrentLoggedInUser({
+          username: doc.data().username,
+          profilePicture: doc.data().profile_picture,
+        })
+        console.log(doc.data())
       })
-    })
-    return unsubscribe
+    } catch (error) {
+      console.log('getUsername error: ', error.message)
+    }
   }
 
   useEffect(() => {
