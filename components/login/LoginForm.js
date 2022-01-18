@@ -3,7 +3,7 @@ import { Alert, Text, View, TextInput, StyleSheet, Pressable, TouchableOpacity }
 import { Formik } from 'formik'
 import * as Yup from 'yup'
 import Validator from 'email-validator'
-import { auth, db } from '../../firebase'
+import { auth } from '../../firebase'
 import { signInWithEmailAndPassword } from 'firebase/auth'
 
 const LoginForm = ({ navigation }) => {

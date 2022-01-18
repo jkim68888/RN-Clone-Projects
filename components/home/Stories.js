@@ -7,9 +7,9 @@ const Stories = () => (
     <ScrollView horizontal showsHorizontalScrollIndicator={false}>
       {USERS.map((story, index) => {
         return (
-          <View key={index.toString()}>
+          <View key={index.toString()} style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
             <Image source={{ uri: story.image }} style={styles.story} />
-            <Text style={styles.storyText}>{story.user.length > 10 ? story.user.slice(0, 9) + '...' : story.user}</Text>
+            <Text style={styles.storyText}>{story.user.length > 7 ? story.user.slice(0, 6) + '...' : story.user}</Text>
           </View>
         )
       })}
@@ -22,14 +22,15 @@ const styles = StyleSheet.create({
     width: 70,
     height: 70,
     borderRadius: 50,
-    marginLeft: 6,
+    marginLeft: 9,
+    marginRight: 9,
     borderWidth: 3,
     borderColor: '#ff8501',
   },
   storyText: {
     textAlign: 'center',
-    marginTop: 3,
-    padding: 3,
+    textAlignVertical: 'center',
+    marginTop: 5,
   },
 })
 

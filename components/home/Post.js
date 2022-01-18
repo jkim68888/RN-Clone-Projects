@@ -1,22 +1,10 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { getAuth } from '@firebase/auth'
+import { updateDoc, doc, collection, arrayRemove, arrayUnion, getDoc } from '@firebase/firestore'
 import { Text, View, StyleSheet, Image, TouchableOpacity } from 'react-native'
 import { Divider } from 'react-native-elements'
 import Message from '../../assets/message.svg'
-
-const Post = ({ post }) => (
-  <View style={{ marginBottom: 30 }}>
-    <Divider width={1} orientation="vertical" />
-    <PostHeader post={post} />
-    <PostImage post={post} />
-    <View style={{ marginHorizontal: 12 }}>
-      <PostFooter />
-      <Likes post={post} />
-      <Caption post={post} />
-      <CommentsSection post={post} />
-      <Comments post={post} />
-    </View>
-  </View>
-)
+import { db } from '../../firebase'
 
 const PostHeader = ({ post }) => {
   return (
@@ -38,26 +26,35 @@ const PostImage = ({ post }) => (
   </View>
 )
 
-const PostFooter = () => (
-  <View style={{ marginTop: 10, flexDirection: 'row', alignItems: 'center' }}>
-    <TouchableOpacity style={{ marginRight: 10 }}>
-      <Image style={styles.heartIcon} source={require('../../assets/heart.png')} />
-    </TouchableOpacity>
-    <TouchableOpacity style={{ marginRight: 10 }}>
-      <Image style={styles.chatIcon} source={require('../../assets/chat.png')} />
-    </TouchableOpacity>
-    <TouchableOpacity>
-      <Message width="30" height="30" />
-    </TouchableOpacity>
-    <TouchableOpacity style={{ flex: 1, alignItems: 'flex-end' }}>
-      <Image style={styles.chatIcon} source={require('../../assets/bookmark.png')} />
-    </TouchableOpacity>
-  </View>
-)
+const PostFooter = ({ handleLike, post, data }) => {
+  return (
+    <View style={{ marginTop: 10, flexDirection: 'row', alignItems: 'center' }}>
+      <TouchableOpacity onPress={() => handleLike(post)} style={{ marginRight: 10 }}>
+        <Image
+          style={styles.heartIcon}
+          source={{
+            uri: data.includes(getAuth().currentUser.email)
+              ? 'https://cdn.icon-icons.com/icons2/1661/PNG/512/12138redheart_110427.png'
+              : 'https://cdn.icon-icons.com/icons2/38/PNG/512/like_favorite_heart_5759.png',
+          }}
+        />
+      </TouchableOpacity>
+      <TouchableOpacity style={{ marginRight: 10 }}>
+        <Image style={styles.chatIcon} source={require('../../assets/chat.png')} />
+      </TouchableOpacity>
+      <TouchableOpacity>
+        <Message width="30" height="30" />
+      </TouchableOpacity>
+      <TouchableOpacity style={{ flex: 1, alignItems: 'flex-end' }}>
+        <Image style={styles.chatIcon} source={require('../../assets/bookmark.png')} />
+      </TouchableOpacity>
+    </View>
+  )
+}
 
-const Likes = ({ post }) => (
+const Likes = ({ data }) => (
   <View style={{ flexDirection: 'row', marginTop: 8 }}>
-    <Text style={{ fontWeight: '600' }}>{post.likes} 좋아요</Text>
+    <Text style={{ fontWeight: '600' }}>{data.length} 좋아요</Text>
   </View>
 )
 
@@ -87,6 +84,47 @@ const Comments = ({ post }) => (
     ))}
   </View>
 )
+
+const Post = ({ post }) => {
+  const [data, setData] = useState([])
+  const nextState = []
+
+  const arrayRemove = (arr, value) => {
+    return arr.filter((ele) => ele != value)
+  }
+
+  const handleLike = async (post) => {
+    try {
+      const currentLikeStatus = !data.includes(post.owner_email)
+      const userDocRef = doc(collection(db, 'users'), post.owner_email)
+      const postDocRef = doc(collection(userDocRef, 'posts'), post.id)
+      await updateDoc(postDocRef, {
+        likes_by_users: currentLikeStatus
+          ? nextState.push(getAuth().currentUser.email)
+          : arrayRemove(nextState, getAuth().currentUser.email),
+      })
+      setData(nextState)
+      console.log('document successfully updated', nextState)
+    } catch (err) {
+      console.log('error updating document', err)
+    }
+  }
+
+  return (
+    <View style={{ marginBottom: 30 }}>
+      <Divider width={1} orientation="vertical" />
+      <PostHeader post={post} />
+      <PostImage post={post} />
+      <View style={{ marginHorizontal: 12 }}>
+        <PostFooter data={data} post={post} handleLike={handleLike} />
+        <Likes data={data} />
+        <Caption post={post} />
+        <CommentsSection post={post} />
+        <Comments post={post} />
+      </View>
+    </View>
+  )
+}
 
 const styles = StyleSheet.create({
   story: {
