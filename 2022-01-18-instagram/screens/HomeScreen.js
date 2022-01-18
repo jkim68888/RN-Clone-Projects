@@ -57,7 +57,7 @@ const HomeScreen = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
       <Header navigation={navigation} />
-      <ScrollView>
+      <ScrollView horizontal={true}>
         {(console.log('story 뷰 그림'), stories.map((story, index) => <Stories story={story} key={index} />))}
       </ScrollView>
       <ScrollView>

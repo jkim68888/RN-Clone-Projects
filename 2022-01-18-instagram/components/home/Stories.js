@@ -17,8 +17,8 @@ const styles = StyleSheet.create({
     width: 70,
     flex: 1,
     marginBottom: 30,
-    marginLeft: 12,
-    marginRight: 12,
+    marginLeft: 8,
+    marginRight: 8,
     alignItems: 'center',
   },
   story: {
