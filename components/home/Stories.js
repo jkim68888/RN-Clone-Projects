@@ -1,33 +1,35 @@
 import React from 'react'
-import { ScrollView, Text, View, Image, StyleSheet } from 'react-native'
-import { USERS } from '../../data/users'
+import { StyleSheet, View, Image, Text } from 'react-native'
 
-const Stories = () => (
-  <View style={{ marginBottom: 13 }}>
-    <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-      {USERS.map((story, index) => {
-        return (
-          <View key={index.toString()} style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-            <Image source={{ uri: story.image }} style={styles.story} />
-            <Text style={styles.storyText}>{story.user.length > 7 ? story.user.slice(0, 6) + '...' : story.user}</Text>
-          </View>
-        )
-      })}
-    </ScrollView>
-  </View>
-)
+const Stories = ({ story }) => {
+  return (
+    <View style={styles.container}>
+      <Image source={{ uri: story.profile_picture }} style={styles.story} />
+      <Text style={styles.storyText}>
+        {story.username.length > 7 ? story.username.slice(0, 6) + '...' : story.username}
+      </Text>
+    </View>
+  )
+}
 
 const styles = StyleSheet.create({
+  container: {
+    width: 70,
+    flex: 1,
+    marginBottom: 30,
+    marginLeft: 12,
+    marginRight: 12,
+    alignItems: 'center',
+  },
   story: {
     width: 70,
     height: 70,
     borderRadius: 50,
-    marginLeft: 9,
-    marginRight: 9,
     borderWidth: 3,
     borderColor: '#ff8501',
   },
   storyText: {
+    width: 70,
     textAlign: 'center',
     textAlignVertical: 'center',
     marginTop: 5,

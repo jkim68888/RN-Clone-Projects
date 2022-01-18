@@ -8,7 +8,7 @@ import { db } from '../../firebase'
 
 const PostHeader = ({ post }) => {
   return (
-    <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', margin: 5 }}>
+    <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', margin: 10 }}>
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
         <Image source={{ uri: post.profile_picture }} style={styles.story} />
         <Text style={{ marginLeft: 5, fontWeight: '700' }}>{post.user}</Text>
@@ -86,8 +86,9 @@ const Comments = ({ post }) => (
 )
 
 const Post = ({ post }) => {
+  // 상태가 변하면 리랜더 한다!
   const [data, setData] = useState([])
-  const nextState = []
+  const nextData = []
 
   const arrayRemove = (arr, value) => {
     return arr.filter((ele) => ele != value)
@@ -100,11 +101,11 @@ const Post = ({ post }) => {
       const postDocRef = doc(collection(userDocRef, 'posts'), post.id)
       await updateDoc(postDocRef, {
         likes_by_users: currentLikeStatus
-          ? nextState.push(getAuth().currentUser.email)
-          : arrayRemove(nextState, getAuth().currentUser.email),
+          ? nextData.push(getAuth().currentUser.email)
+          : arrayRemove(nextData, getAuth().currentUser.email),
       })
-      setData(nextState)
-      console.log('document successfully updated', nextState)
+      setData(nextData)
+      console.log('document successfully updated', nextData)
     } catch (err) {
       console.log('error updating document', err)
     }
